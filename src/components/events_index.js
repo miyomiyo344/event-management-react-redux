@@ -53,7 +53,7 @@ import { increment, decrement } from '../actions'
 
 // const App = () => ( <Counter> </Counter> )
 
-class App extends Component {
+class EventsIndex extends Component {
   // Reduxを使用する場合は同じ処理をreducerで行うことになるため記述が不要となる
   // constructorは初期化処理で実行されるメソッド(コールバック)
   // constructor(props){
@@ -106,6 +106,6 @@ const mapDispatchToProps = dispatch => ({
 //   age: 1
 // }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(EventsIndex)
 
 // export default App;
