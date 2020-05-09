@@ -1,10 +1,32 @@
 import React from 'react';
 
 function App() {
+  // const greeting = "Hi!!";
+  // const dom = <h1 className="foo">{greeting}</h1>
+  // return (
+  //   dom
+  // );
+
+  // return (
+  //   <input type="text" onClick={() => {console.log("I am clicked.")}} />
+  // );
+
+  // return (
+  //   <input type="text" onChange={() => {console.log("I am clicked.")}} />
+  // );
+
+  // return (
+  //   <div>
+  //     <label htmlFor="bar"> bar </label>
+  //     <input type="text" onChange={() => {console.log("I am clicked.")}} />
+  //   </div>
+  // );
+
   return (
-    <div>
-      Hello, world!
-    </div>
+    <React.Fragment>
+      <label htmlFor="bar"> bar </label>
+      <input type="text" onChange={() => {console.log("I am clicked.")}} />
+    </React.Fragment>
   );
 }
 
