@@ -6,6 +6,20 @@ import _ from 'lodash'
 // ページ内にリンクを生成するために必要
 import { Link } from 'react-router-dom'
 
+// Tableにmaterial-uiを使用するために必要
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn
+} from 'material-ui/Table'
+// 新規作成用のボタンにmaterial-uiを使用するために必要
+import FloatingActionButton from 'material-ui/FloatingActionButton'
+// 新規作成用のボタンのプラスマークにmaterial-uiを使用するために必要
+import ContentAdd from 'material-ui/svg-icons/content/add'
+
 // Getアクションを呼び出すために必要
 import { readEvents } from '../actions'
 
@@ -17,37 +31,50 @@ class EventsIndex extends Component {
   // イベント一覧の描画
   renderEvents() {
     return _.map(this.props.events, event => (
-      <tr key={event.id}>
-        <td>{event.id}</td>
-        <td>
+      <TableRow key={event.id}>
+        <TableRowColumn>{event.id}</TableRowColumn>
+        <TableRowColumn>
           <Link to={`/events/${event.id}`}>
             {event.title}
           </Link>
-        </td>
-        <td>{event.body }</td>
-      </tr>
+        </TableRowColumn>
+        <TableRowColumn>{event.body }</TableRowColumn>
+      </TableRow>
     ))
   }
 
   // renderする内容
   render(){
+    const style = {
+      position: 'fixed',
+      right: 12,
+      bottom: 12
+    }
     return(
       <React.Fragment>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Body</th>
-            </tr>
-          </thead>
+        <FloatingActionButton style={style} containerElement={<Link to="/events/new" />}>
+          <ContentAdd />
+        </FloatingActionButton>
+        <Table>
+          <TableHeader
+          // displaySelectAll={false}にて全選択のCheckBoxを消してる
+          displaySelectAll={false}
+          // adjustForCheckbox={false}にて消したCheckBox分の隙間を埋める
+          adjustForCheckbox={false}
+          >
+            <TableRow>
+              <TableHeaderColumn>ID</TableHeaderColumn>
+              <TableHeaderColumn>Title</TableHeaderColumn>
+              <TableHeaderColumn>Body</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
 
-          <tbody>
+          {/* displayRowCheckbox={false}にてCheckBoxを消す */}
+          <TableBody displayRowCheckbox={false}>
             {this.renderEvents()}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
 
-        <Link to="/events/new">New Event</Link>
       </React.Fragment>
     )
   }

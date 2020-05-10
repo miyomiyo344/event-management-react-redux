@@ -6,6 +6,8 @@ import thunk from 'redux-thunk'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 // デバックしやすいように環境を整えるためのパッケージ
 import { composeWithDevTools } from 'redux-devtools-extension'
+// material-uiを使用するためのパッケージ
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import './index.css';
 import reducer from './reducers'
@@ -23,19 +25,23 @@ const enhancer = process.env.NODE_ENV === 'development' ?
 const store = createStore(reducer, enhancer)
 
 // ルーティングの設定
+// MuiThemeProviderはmaterial-uiするために記述
+// 最後のラップにカンマが入るので注意
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        {/* exactとつけると書かれているパスに完全にマッチする場合のみ有効になる。マッチ条件が厳しくなる。 */}
-        <Route path="/events/new" component={EventsNew} />
-        <Route path="/events/:id" component={EventsShow} />
-        {/* 下記2つはどちらもルートのバス */}
-        <Route exact path="/" component={EventsIndex} />
-        <Route exact path="/events" component={EventsIndex} />
-      </Switch>
-    </BrowserRouter>
-  </Provider>,
+  <MuiThemeProvider>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Switch>
+          {/* exactとつけると書かれているパスに完全にマッチする場合のみ有効になる。マッチ条件が厳しくなる。 */}
+          <Route path="/events/new" component={EventsNew} />
+          <Route path="/events/:id" component={EventsShow} />
+          {/* 下記2つはどちらもルートのバス */}
+          <Route exact path="/" component={EventsIndex} />
+          <Route exact path="/events" component={EventsIndex} />
+        </Switch>
+      </BrowserRouter>
+    </Provider>
+  </MuiThemeProvider>,
   document.getElementById('root')
 );
 
