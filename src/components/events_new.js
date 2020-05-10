@@ -2,32 +2,67 @@
 import React, { Component } from 'react';
 // reduxを使用する場合に必要なconnect関数
 import { connect } from 'react-redux'
+// 入力フォームの作成に必要
+import { Field, reduxForm } from 'redux-form'
 // ページ内にリンクを生成するために必要
 import { Link } from 'react-router-dom'
 
-// アクションを呼び出すために必要
-// import { postEvents } from '../actions'
-
-// ?????
-// import { ReactComponent } from '*.svg';
+// Postアクションを呼び出すために必要
+// import { postEvent } from '../actions'
 
 // Componentのタイトル
 class EventsNew extends Component {
 
-// 　renderする内容
+  // フォームのrenderFieldというメソッドを定義。入力される値が渡ってくる。
+  renderField(field) {
+    // 入力された情報を拾う
+    const { input, label, type, meta: { touched, error } } = field
+
+    return (
+    <div>
+      <input {...input} placeholder={label} type={type} />
+      {/* タッチされて尚且エラーがある場合のバリデーションの記述。問題があれば「error」を表示 */}
+      {touched && error && <span>{error}</span>}
+    </div>)
+  }
+
+  // renderする内容
   render(){
+
     return(
-      <React.Fragment>
-        <div>foo</div>
-      </React.Fragment>
+      <form>
+        <div><Field label="Title" name="title" type="text" component={this.renderField} /></div>
+        <div><Field label="Body" name="body" type="text" component={this.renderField} /></div>
+
+        <div>
+          <input type="submit" value="Submit" disabled={false} />
+          <Link to="/">Cancel</Link>
+        </div>
+      </form>
     )
   }
 }
 
+// バリデーションを行う関数の定義
+const validate = values => {
+  // エラーとする内容
+  const errors = {}
+
+  // valuesには入力されている値が渡ってくる。空だった場合はerrorsというオブジェクトのtitle keyに対してエラー文を出力。
+  if (!values.title) errors.title = "Enter a title, please."
+  if (!values.body) errors.body = "Enter a body, please."
+
+  // エラーがあった場合は「errors」の中にエラー文が格納されて返す
+  return errors
+}
 
 // const mapDispatchToProps = ({ postEvent })
 
-export default connect(null, null)(EventsNew)
+
+// Fromをしようしたときに必要。バリデーションの設定、フォームの名前を定義する。
+export default connect(null, null)(
+  reduxForm({ validate, form: 'eventNewForm' })(EventsNew)
+)
 
 
 
