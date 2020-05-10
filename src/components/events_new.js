@@ -8,14 +8,21 @@ import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 
 // Postアクションを呼び出すために必要
-// import { postEvent } from '../actions'
+import { postEvent } from '../actions'
 
 // Componentのタイトル
 class EventsNew extends Component {
 
+  // onSubmitはイニシャライズしたときにバインドすることとする
+  constructor(props) {
+    super(props)
+    this.onSubmit = this.onSubmit.bind(this)
+  }
+
   // フォームのrenderFieldというメソッドを定義。入力される値が渡ってくる。
   renderField(field) {
     // 入力された情報を拾う
+    // touchedはredux特有のもので1回でもフォームに触ったらtouched状態になる
     const { input, label, type, meta: { touched, error } } = field
 
     return (
@@ -26,11 +33,22 @@ class EventsNew extends Component {
     </div>)
   }
 
+  // 非同期処理を行うためにはasyncが必要
+  async onSubmit(values){
+    // postEventにvaluesの値を渡す
+    await this.props.postEvent(values)
+    // トップページの履歴に追加
+    this.props.history.push('/')
+  }
+
   // renderする内容
   render(){
+    // handleSubmitという関数はrenderが実行されたときに渡ってくる関数となる
+    const { handleSubmit } = this.props
 
     return(
-      <form>
+      // サブミットボタンが押されたときのメソッドを作成
+      <form onSubmit={handleSubmit(this.onSubmit)}>
         <div><Field label="Title" name="title" type="text" component={this.renderField} /></div>
         <div><Field label="Body" name="body" type="text" component={this.renderField} /></div>
 
@@ -56,11 +74,10 @@ const validate = values => {
   return errors
 }
 
-// const mapDispatchToProps = ({ postEvent })
-
+const mapDispatchToProps = ({ postEvent })
 
 // Fromをしようしたときに必要。バリデーションの設定、フォームの名前を定義する。
-export default connect(null, null)(
+export default connect(null, mapDispatchToProps)(
   reduxForm({ validate, form: 'eventNewForm' })(EventsNew)
 )
 
