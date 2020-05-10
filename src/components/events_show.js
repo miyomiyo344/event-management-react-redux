@@ -20,6 +20,13 @@ class EventsShow extends Component {
     this.onDeleteClick = this.onDeleteClick.bind(this)
   }
 
+  // レンダリングが完了したらEvent情報を拾ってくる処理
+  // getEventはactionで定義
+  componentDidMount() {
+    const { id } = this.props.match.params
+    if (id) this.props.getEvent(id)
+  }
+
   // フォームのrenderFieldというメソッドを定義。入力される値が渡ってくる。
   renderField(field) {
     // 入力された情報を拾う
@@ -89,11 +96,21 @@ const validate = values => {
   return errors
 }
 
-// 本ComponentにdeleteEventをバインド
-const mapDispatchToProps = ({ deleteEvent })
+// 現在各IDが持っているStateの情報(TitleとBody)を表示させるために必要
+const mapStateToProps = (state, ownProps) => {
+  // ownPropsにIDが入っている
+  const event = state.events[ownProps.match.params.id]
+  // initialValues: eventは初期値を渡すための記述
+  // 左側のeventが上の行で指示してIDが入ったevent
+  return { initialValues: event, event }
+}
+
+// 本ComponentにdeleteEvent,getEventをバインド
+const mapDispatchToProps = ({ deleteEvent, getEvent })
 
 // Fromをしようしたときに必要。バリデーションの設定、フォームの名前を定義する。
-export default connect(null, mapDispatchToProps)(
-  reduxForm({ validate, form: 'eventShowForm' })(EventsShow)
+export default connect(mapStateToProps , mapDispatchToProps)(
+  // enableReinitialize: trueは元々持っているTitleとBodyの情報を表示させるための記述
+  reduxForm({ validate, form: 'eventShowForm', enableReinitialize: true })(EventsShow)
 )
 
