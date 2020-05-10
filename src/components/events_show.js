@@ -52,8 +52,8 @@ class EventsShow extends Component {
 
   // 非同期処理を行うためにはasyncが必要
   async onSubmit(values){
-    // postEventにvaluesの値を渡す
-    // await this.props.postEvent(values)
+    // putEventにvaluesの値を渡す
+    await this.props.putEvent(values)
     // トップページの履歴に追加
     this.props.history.push('/')
   }
@@ -63,7 +63,8 @@ class EventsShow extends Component {
     // handleSubmitという関数はrenderが実行されたときに渡ってくる関数となる
     // pristineという属性は何も入力されていない状態を検知できる
     // submittingという属性は一度submitを押したらtrueになる。これをdisabledと連携して一度submitしたらボタンを非活性状態にできる(2重押し防止)。
-    const { handleSubmit, pristine, submitting } = this.props
+    // invalidはバリデーションが効いていてErrorとなっている場合にSubmitできなくするための記述
+    const { handleSubmit, pristine, submitting, invalid } = this.props
 
     return(
       // サブミットボタンが押されたときのメソッドを作成
@@ -73,7 +74,7 @@ class EventsShow extends Component {
 
         <div>
           {/* inputタグでpristineという状態を渡すことで何も入力されていなかったときにsubmitボタンが押せなくなる */}
-          <input type="submit" value="Submit" disabled={pristine || submitting} />
+          <input type="submit" value="Submit" disabled={pristine || submitting || invalid} />
           <Link to="/">Cancel</Link>
           {/* onDeleteClickの中でDeleteの処理を行う */}
           <Link to="/" onClick={this.onDeleteClick}>Delete</Link>
@@ -105,8 +106,8 @@ const mapStateToProps = (state, ownProps) => {
   return { initialValues: event, event }
 }
 
-// 本ComponentにdeleteEvent,getEventをバインド
-const mapDispatchToProps = ({ deleteEvent, getEvent })
+// 本ComponentにdeleteEvent,getEvent,putEventをバインド
+const mapDispatchToProps = ({ deleteEvent, getEvent, putEvent })
 
 // Fromをしようしたときに必要。バリデーションの設定、フォームの名前を定義する。
 export default connect(mapStateToProps , mapDispatchToProps)(

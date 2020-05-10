@@ -46,7 +46,8 @@ class EventsNew extends Component {
     // handleSubmitという関数はrenderが実行されたときに渡ってくる関数となる
     // pristineという属性は何も入力されていない状態を検知できる
     // submittingという属性は一度submitを押したらtrueになる。これをdisabledと連携して一度submitしたらボタンを非活性状態にできる(2重押し防止)。
-    const { handleSubmit, pristine, submitting } = this.props
+    // invalidはバリデーションが効いていてErrorとなっている場合にSubmitできなくするための記述
+    const { handleSubmit, pristine, submitting, invalid } = this.props
 
     return(
       // サブミットボタンが押されたときのメソッドを作成
@@ -56,7 +57,7 @@ class EventsNew extends Component {
 
         <div>
           {/* inputタグでpristineという状態を渡すことで何も入力されていなかったときにsubmitボタンが押せなくなる */}
-          <input type="submit" value="Submit" disabled={pristine || submitting} />
+          <input type="submit" value="Submit" disabled={pristine || submitting || invalid} />
           <Link to="/">Cancel</Link>
         </div>
       </form>

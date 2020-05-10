@@ -10,6 +10,8 @@ export const READ_EVENTS = 'READ_EVENTS'
 export const CREATE_EVENT = 'CREATE_EVENT'
 // 詳細表示用
 export const READ_EVENT = 'READ_EVENT'
+// 更新用
+export const UPDATE_EVENT = 'UPDATE_EVENT'
 // 削除用
 export const DELETE_EVENT = 'DELETE_EVENT'
 
@@ -34,6 +36,14 @@ export const postEvent = values => async dispatch => {
 export const getEvent = id => async dispatch => {
   const response = await axios.get(`${ROOT_URL}/events/${id}${QUERYSTRING}`)
   dispatch({ type: READ_EVENT, response })
+}
+
+// 更新用関数アクション
+// TitleとBodyをもらいたいのでvaluesと書く
+export const putEvent = values => async dispatch => {
+  // 更新内容を下記valuesで渡す
+  const response = await axios.put(`${ROOT_URL}/events/${values.id}${QUERYSTRING}`, values)
+  dispatch({ type: UPDATE_EVENT, response })
 }
 
 // 削除用関数アクション
