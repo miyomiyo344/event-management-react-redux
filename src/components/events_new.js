@@ -39,7 +39,7 @@ class EventsNew extends Component {
       {...input}
       fullWidth={true}
     />
-    
+
     // // material-uiを使わないView
     // <div>
     //   <input {...input} placeholder={label} type={type} />
