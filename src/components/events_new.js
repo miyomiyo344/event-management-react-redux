@@ -6,6 +6,9 @@ import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 // ページ内にリンクを生成するために必要
 import { Link } from 'react-router-dom'
+// material-uiを使用するために必要
+import RaisedButton from 'material-ui/RaisedButton'
+import TextField from 'material-ui/TextField'
 
 // Postアクションを呼び出すために必要
 import { postEvent } from '../actions'
@@ -26,11 +29,24 @@ class EventsNew extends Component {
     const { input, label, type, meta: { touched, error } } = field
 
     return (
-    <div>
-      <input {...input} placeholder={label} type={type} />
-      {/* タッチされて尚且エラーがある場合のバリデーションの記述。問題があれば「error」を表示 */}
-      {touched && error && <span>{error}</span>}
-    </div>)
+    // material-uiをつかったView
+    <TextField
+      hintText={label}
+      floatingLabelText={label}
+      type={type}
+      // touched && error＝touchedであればエラーを表示
+      errorText={ touched && error }
+      {...input}
+      fullWidth={true}
+    />
+    
+    // // material-uiを使わないView
+    // <div>
+    //   <input {...input} placeholder={label} type={type} />
+    //   {/* タッチされて尚且エラーがある場合のバリデーションの記述。問題があれば「error」を表示 */}
+    //   {touched && error && <span>{error}</span>}
+    // </div>
+    )
   }
 
   // 非同期処理を行うためにはasyncが必要
@@ -48,6 +64,8 @@ class EventsNew extends Component {
     // submittingという属性は一度submitを押したらtrueになる。これをdisabledと連携して一度submitしたらボタンを非活性状態にできる(2重押し防止)。
     // invalidはバリデーションが効いていてErrorとなっている場合にSubmitできなくするための記述
     const { handleSubmit, pristine, submitting, invalid } = this.props
+    // RaisedButtonのstyle
+    const style = { margin: 12 }
 
     return(
       // サブミットボタンが押されたときのメソッドを作成
@@ -55,11 +73,15 @@ class EventsNew extends Component {
         <div><Field label="Title" name="title" type="text" component={this.renderField} /></div>
         <div><Field label="Body" name="body" type="text" component={this.renderField} /></div>
 
-        <div>
+        <RaisedButton label="Submit" type="submit" style={style} disabled={pristine || submitting || invalid} />
+        <RaisedButton label="Cancel" style={style} containerElement={<Link to="/" />} />
+
+        {/* material-uiを使わないView */}
+        {/* <div> */}
           {/* inputタグでpristineという状態を渡すことで何も入力されていなかったときにsubmitボタンが押せなくなる */}
-          <input type="submit" value="Submit" disabled={pristine || submitting || invalid} />
-          <Link to="/">Cancel</Link>
-        </div>
+          {/* <input type="submit" value="Submit" disabled={pristine || submitting || invalid} /> */}
+          {/* <Link to="/">Cancel</Link> */}
+        {/* </div> */}
       </form>
     )
   }
