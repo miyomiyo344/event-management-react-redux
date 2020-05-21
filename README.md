@@ -1,8 +1,8 @@
-<img src="https://i.gyazo.com/12d82e5f99f1982829922a751039434d.jpg" alt="Image from Gyazo" width="1000"/>
+<img src="https://i.gyazo.com/08d43fe86b74317f717f4a70bb7baa8e.gif" alt="Image from Gyazo" width="1000"/>
 
 ## 🚩 React CRUD Application
 
-React / Redux の概要を押さえたCRUDイベント管理アプリです。
+React / Redux の概要を押さえたSPA CRUDイベント管理アプリです。
 
   
 
